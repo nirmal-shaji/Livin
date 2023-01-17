@@ -4,7 +4,7 @@ import PostShare from '../PostShare/PostShare';
 
 
 function ShareModal({modalOpened,setModalOpened}) {
-    console.log(setModalOpened);
+  
   const theme = useMantineTheme();
 
   return (

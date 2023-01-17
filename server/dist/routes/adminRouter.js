@@ -10,4 +10,5 @@ router.get('/posts', adminController_1.default.getAllPost);
 router.get('/block/:id', adminController_1.default.blockUser);
 router.patch('/block/:id', adminController_1.default.unBlockUser);
 router.get('/dashboard', adminController_1.default.dashboard);
+router.get('/notification', adminController_1.default.notification);
 module.exports = router;

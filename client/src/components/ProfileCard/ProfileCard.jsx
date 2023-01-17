@@ -10,13 +10,13 @@ import coverPicture from "../../img/defaultProfile.png"
 
 const ProfileCard = ({location}) => {
     const params = useParams()
-    console.log(params,"this is params")
+  
     const { userData } = useSelector((state) => state.authReducer.authData);
     const { users } = useSelector((state) => state.authReducer)
     let userProfile
    
     if (params.id) {
-        console.log("inside params")
+  
         if (params.id === userData._id) {
          userProfile=userData 
         }
@@ -25,7 +25,7 @@ const ProfileCard = ({location}) => {
         }
     }
     else {
-        console.log("inside else")
+   
         userProfile=userData
     }
     
@@ -33,7 +33,7 @@ const ProfileCard = ({location}) => {
     
 const navigate=useNavigate()
 const handleChat = async (data) => {
-    console.log(data,"handleChat is workingggggggggggggggg")
+
     await createChat(data)  
     navigate('/chat')
     

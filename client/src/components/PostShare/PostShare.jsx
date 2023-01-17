@@ -27,7 +27,7 @@ const PostShare = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
     
-        console.log(userData,"the users data is here ")
+
         const newPost = {
           userId: userData._id,
           desc: desc.current.value,
@@ -36,12 +36,12 @@ const PostShare = () => {
         if (image) {
           const datas = new FormData();
           const filename = Date.now() + image.name;
-          console.log(filename,"the conouojouo")
+          
           datas.append("name", filename);
           datas.append("file", image);
           datas.append("upload_preset", "ogamtbe3");
           datas.append("cloud_name","dxxgj5lfp")
-          console.log(datas.filename,"in handle submit")
+       
           dispatch(postUpload(datas,newPost))
           setImage(null);
             
@@ -55,19 +55,7 @@ const PostShare = () => {
         }
       };
 
-    // const uploadWidget = () => {
-    //     var myWidget = window.cloudinary.createUploadWidget({
-    //         cloudName: 'dxxgj5lfp', 
-    //         uploadPreset: 'ogamtbe3'}, (error, result) => { 
-    //         if (!error && result && result.event === "success") { 
-    //               setImage((prev)=> [...prev,{url:result.info.url,publicId:result.info.public_id}])
-    //             console.log('Done! Here is the image info: ', result.info); 
-    //           }
-    //         }
-    //     )
-    //     myWidget.open();
-        
-    // }
+
     
 
   return (

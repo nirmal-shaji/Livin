@@ -19,9 +19,7 @@ function App() {
   return (
     <BrowserRouter>
     <div className="App">
-      
-      {/* <div className='blur' style={{ top: '-18%', right: '0' }}></div>
-        <div className='blur' style={{ top: '36%', left: '-8rem' }}></div> */}
+  
         <Routes>
         <Route path='/auth' element={ userData?<Home />:<Auth />} />
           <Route path='/profile' element={userData ? <Profile /> : <Auth />} />
@@ -35,8 +33,7 @@ function App() {
           
       </Routes>
     
-    {/* <Home /> */}
-      {/* <Profile/> */}
+
        
    
     </div>

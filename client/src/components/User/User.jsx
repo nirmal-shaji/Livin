@@ -12,7 +12,7 @@ const User = ({ person }) => {
   const id = person._id
  
   const handleFollow = () => {  
-    console.log(userData, id, "thedata")
+
     
     following ?
       dispatch(unfollowUser(userData,id))
@@ -23,7 +23,7 @@ const User = ({ person }) => {
     <div className='follower'>
       <div onClick={() => {
         navigate(`/profile/${person._id}`)
-        console.log("this is working ")
+  
     }}>
         <img src={person?.image?person.image:coverPicture} className='followerImage' alt='hi'/>
         <div className='name'>

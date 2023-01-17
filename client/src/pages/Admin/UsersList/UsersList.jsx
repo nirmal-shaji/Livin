@@ -16,7 +16,7 @@ function UsersList() {
  
   useEffect(async() => {
     const {data} = await userList()
-    console.log(data,"this is users list ")
+   
     setUserData(data.usersList);
    
    }, [pageReload])

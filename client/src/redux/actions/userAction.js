@@ -1,4 +1,4 @@
-import { followUserApi,unfollowUserApi } from "../../api/usersApi" 
+import { followUserApi,unfollowUserApi,deletePost } from "../../api/usersApi" 
 
 
 export const followUser =  (userData,id) => {
@@ -6,7 +6,7 @@ export const followUser =  (userData,id) => {
         async (dispatch) => {
            
             const {data}   = await followUserApi(userData, id);
-           console.log(data)
+          
             dispatch({type:"FOLLOW_USER",data})
         }
         
@@ -16,10 +16,19 @@ export const followUser =  (userData,id) => {
 export const unfollowUser = (userData,id) => {
     return (
         async (dispatch) => {
-             console.log("this is working unfolooow")
+           
             const {data }= await unfollowUserApi(userData,id);
             dispatch({type:"UNFOLLOW_USER",data})
         }
     )
 }
 
+export const deletePosts = (id) => {
+    console.log("inside")
+    return (
+        async (dispatch) => {
+        console.log("this is working")
+        const data = await deletePost(id);
+        dispatch({type:"POST_DELETE",data})
+    })
+}

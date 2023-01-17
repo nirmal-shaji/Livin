@@ -11,7 +11,7 @@ const [postData,setPostData]=useState([])
     
    const {data} = await postsList();
     setPostData(data);
-     console.log(data,"this is postData")
+    
   }, [])
   
   return (

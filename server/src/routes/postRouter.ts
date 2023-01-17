@@ -13,6 +13,9 @@ router.post('/comment/:id', postController.addComment);
 router.get('/allComment/:id', postController.allComment);
 router.get('/save/post', postController.savePost)
 router.get("/save/allPost/:id", postController.allSavedPost);
+router.post('/report/:id', postController.reportPost);
+router.post('/edit/post',postController.editPost)
+
 
 
 

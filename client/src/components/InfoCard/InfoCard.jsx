@@ -11,7 +11,7 @@ const InfoCard = () => {
     const [modalOpened, setModalOpened] = useState(false)
     const dispatch=useDispatch()
     const handleSubmit = () => {
-        console.log("hih")
+   
     }
     const handleLogOut = ()=> {
         dispatch(logout())

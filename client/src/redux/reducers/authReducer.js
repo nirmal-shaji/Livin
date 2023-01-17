@@ -15,7 +15,7 @@ const authReducer = (state = { authData: null, loading: false, error: false, upd
       case "PROFILE_UPLOADING":
       return { ...state, loading: true }
     case "SUCCESS":
-      console.log(action,"inside acito")
+     
       return { ...state, loading: false, authData: {...state.authData.token,userData:action.userData.data}}
       case "FAILURE":
       return { ...state, loading: false, error: true }

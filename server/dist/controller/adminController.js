@@ -13,9 +13,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 const postModel_1 = __importDefault(require("../model/postModel"));
 const userModel_1 = __importDefault(require("../model/userModel"));
+const notificationModel_1 = __importDefault(require("../model/notificationModel"));
 module.exports = {
     getAllPost: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        console.log("hi reached herer");
         const postData = yield postModel_1.default.find({}).populate('userId').lean();
         res.status(200).json(postData);
     }),
@@ -32,13 +32,36 @@ module.exports = {
         res.status(200).json("success");
     }),
     removePost: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        console.log("this is working    ");
         res.status(200).json("success");
     }),
     dashboard: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        const users = yield userModel_1.default.find({}, { createdAt: 1 }).lean();
-        const user = users.map((value) => {
-            console.log(value.createdAt);
-        });
+        const users = yield userModel_1.default.aggregate([{ $group: { _id: { month: { $month: "$createdAt" } }, userCount: { $sum: 1 } } }]).sort({ _id: -1 });
+        const userCount = [];
+        for (let i = 0; i < 12; i++) {
+            users.map((value) => {
+                if (value.userCount) {
+                    userCount[value._id.month - 1] = value.userCount;
+                }
+            });
+            if (!userCount[i])
+                userCount[i] = 0;
+        }
+        //////
+        const posts = yield postModel_1.default.aggregate([{ $group: { _id: { month: { $month: "$createdAt" } }, postCount: { $sum: 1 } } }]).sort({ _id: -1 });
+        const postCount = [];
+        for (let i = 0; i < 12; i++) {
+            posts.map((value) => {
+                if (value.postCount) {
+                    postCount[value._id.month - 1] = value.postCount;
+                }
+            });
+            if (!postCount[i])
+                postCount[i] = 0;
+        }
+        res.status(200).json({ postCount, userCount });
+    }),
+    notification: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        const notifications = yield notificationModel_1.default.findOne({ adminId: "admin" });
+        res.status(200).json(notifications);
     })
 };

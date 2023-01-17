@@ -14,7 +14,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 const messageModal_1 = __importDefault(require("../model/messageModal"));
 module.exports = {
     addMessage: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        console.log(req.body);
         const { text, chatId, senderId } = req.body;
         // const { userId } = req.body.user;
         if (!(text && chatId)) {

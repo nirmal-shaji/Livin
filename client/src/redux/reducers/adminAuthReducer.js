@@ -12,7 +12,7 @@
       return { ...state, loading: false, error: true };
     
       case "ADMIN_LOG_OUT":
-      console.log("this is working")
+     
       localStorage.clear();
       return { ...state, adminData:null, loading: false, error: false, updateLoading: false }
     default:

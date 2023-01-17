@@ -69,7 +69,7 @@ const rows = [
 ];
 
 export default function ColumnGroupingTable({ data,setPageReload}) {
-  console.log(data, "data insider")
+
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [opened, setOpened] = React.useState(false);
@@ -87,8 +87,7 @@ export default function ColumnGroupingTable({ data,setPageReload}) {
     setPage(0);
   };
 
-  console.log(rows, "this is the data in the dummy")
-  console.log(columns, "this is the columnssssss")
+
 
   return (
     <Paper sx={{ width: '100%' }}>
@@ -124,12 +123,10 @@ export default function ColumnGroupingTable({ data,setPageReload}) {
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
-              <TableCell align="center" colSpan={2}>
-                Country
+              <TableCell  colSpan={2}>
+              <span style={{"textDecoration":"underline","fontSize":"20px"}}>   User Table</span>
               </TableCell>
-              <TableCell align="center" colSpan={3}>
-                Details
-              </TableCell>
+             
             </TableRow>
             <TableRow>
               {columns.map((column) => (

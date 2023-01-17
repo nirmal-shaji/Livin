@@ -21,7 +21,7 @@ export const SignUp = (formData) => {
         try {
             
             const { data } = await AuthApi.SignUp(formData) 
-            console.log(data);
+       
             dispatch({ type: "AUTH_SUCCESS", data });
         } catch (error) {
             console.log(error);

@@ -8,3 +8,4 @@ export const blockUser = (id) => axios.get(`/api/v1/admin/block/${id}`);
 export const unBlockUser = (id) => axios.patch(`/api/v1/admin/block/${id}`);
 export const removePost = (id) => axios.get(`/api/v1/admin/post/${id}`);
 export const adminDashboard = (id) => axios.get('/api/v1/admin/dashboard');
+export const adminNotification = () => axios.get('/api/v1/admin/notification');

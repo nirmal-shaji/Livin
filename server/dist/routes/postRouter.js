@@ -13,4 +13,6 @@ router.post('/comment/:id', postController_1.default.addComment);
 router.get('/allComment/:id', postController_1.default.allComment);
 router.get('/save/post', postController_1.default.savePost);
 router.get("/save/allPost/:id", postController_1.default.allSavedPost);
+router.post('/report/:id', postController_1.default.reportPost);
+router.post('/edit/post', postController_1.default.editPost);
 module.exports = router;

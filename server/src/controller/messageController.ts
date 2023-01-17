@@ -3,7 +3,7 @@ import { RequestHandler, Request, Response } from 'express';
 
 export = {
   addMessage: async (req: Request, res: Response) => {
-    console.log(req.body)
+   
   const { text, chatId,senderId } = req.body;
   // const { userId } = req.body.user;
   if (!(text && chatId)) {

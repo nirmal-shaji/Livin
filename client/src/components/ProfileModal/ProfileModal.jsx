@@ -25,7 +25,7 @@ const ProfileModal = ({ modalOpened, setModalOpened, data }) => {
 
   const onImageChange = (event) => {
     if (event.target.files && event.target.files[0]) {
-      console.log(event.target.files,"this is the sample that files reach here")
+   
       let img = event.target.files[0];
       event.target.name === "profileImage"
         ? setProfileImage(img)
@@ -37,7 +37,7 @@ const ProfileModal = ({ modalOpened, setModalOpened, data }) => {
   const handleSubmit = async(e) => {
     e.preventDefault();
     let userData = formData;
-    // console.log(formData)
+   
     if (profileImage) {
       const data = new FormData();
       const fileName = Date.now() + profileImage.name;
@@ -60,18 +60,16 @@ const ProfileModal = ({ modalOpened, setModalOpened, data }) => {
       data.append("file", coverImage);
       data.append("upload_preset", "ogamtbe3");
       data.append("cloud_name","dxxgj5lfp")
-      console.log(userData,"thisssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss")
+      
       try {
         const cover = dispatch(coverPhotoUpload(data,userData));
         
-        // userData.coverPicture = cover.data.secure_url
-        // console.log(userData,"this is the sample of everything")
+      
       } catch (err) {
         console.log(err);
       }
     }
-    console.log(userData, "the whole data is herererererererreeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
-    console.log(data)
+  
     dispatch(updateDetails(data, userData))
   
     // dispatch(updateUser(param.id, UserData));

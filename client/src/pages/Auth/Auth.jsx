@@ -24,9 +24,9 @@ const Auth = () => {
     const submitData = (event) => {
         
         event.preventDefault();
-        console.log(location.pathname)
+       
         if (location.pathname === "/admin" ) {
-            console.log("this is here")
+        
             dispatch(adminLogin(userData));
         }
            

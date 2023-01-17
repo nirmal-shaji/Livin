@@ -18,26 +18,37 @@ const Posts = () => {
     const params = useParams()
     
     
-    const {userData} = useSelector((state) => state.authReducer.authData)
+    const { userData } = useSelector((state) => state.authReducer.authData)
+    const {users}=useSelector((state)=>state.authReducer)
     
     if(!fetchedPost) 
-    return 'No Posts';
+        return 'No Posts';
+    //this is for profile part
     if (params.id) {
      
         fetchedPost = fetchedPost.filter((post) => {
-            // console.log(typeof (post.userId), "the")
-            // console.log(typeof(params.id),"yessss")
-            // post.userId = post.userId * 1
+           
             
-            // console.log(post.userId,"this is also wrang")
+      
             if (post.userId === params.id) {
-                //   console.log(post.userId,"this is wrang")
+             
                  return post.userId
             }
               
         })
     }
- 
+    else {
+        
+        
+    fetchedPost = fetchedPost.map((post) => {
+        const data = users.find((value) => value._id === post.userId)
+        post.userId = data
+        return post
+    })
+  
+    }
+    //this is to display post along with userName
+  
 
     return (
         <div className="Posts">

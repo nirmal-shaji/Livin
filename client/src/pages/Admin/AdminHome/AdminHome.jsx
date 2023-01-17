@@ -6,40 +6,71 @@ import '@coreui/coreui/dist/css/coreui.min.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { adminDashboard } from '../../../api/adminApi';
 import { CChart } from '@coreui/react-chartjs'
+
 // import CChart from '@coreui/react-chartjs'
 // import { Table } from '@mui/material';
 import ColumnGroupingTable from '../../../components/Table/Table';
 import "./AdminHome.css"
 
 function AdminHome() {
-  const [userData,setUserData]=useState([])
+  const [userData, setUserData] = useState([])
+
   useEffect(async() => {
-   const data=await adminDashboard()
+    const {data}= await adminDashboard()
+  
     setUserData(data); 
    
+   
   }, [])
+ 
+
   
   // const [userList, setUserList] = useState(false);
 
   return (
     <Layout setUserList>
     {/* {userList?<div><h1>hihih</h1></div>: */}
-      <div>
+      <div style={{"display":"flex","justifyContent":"space-between"}}>
           {/* <ColumnGroupingTable /> */}
-          <CChart
+          <div style={{"width":"45%",}}>
+              <CChart 
+              height={200}
   type="bar"
   data={{
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July','August','September','October','November','December'  ],
+    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul','Aug','Sep','Oct','Nov','Dec'  ],
     datasets: [
       {
         label: 'Users Count',
         backgroundColor: '#blue',
-        data: [40, 20, 12, 39, 10, 40, 39, 80, 40],
+        data: userData.userCount
       },
     ],
   }}
   labels="months"
+        />
+          </div>
+          <div style={{"width":"45%"}}>
+             <CChart
+              height={200}
+  type="line" 
+  data={{
+    labels:   ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul','Aug','Sep','Oct','Nov','Dec'  ],
+    datasets: [
+   
+      {
+        label: "Post Count",
+        backgroundColor: "rgba(151, 187, 205, 0.2)",
+        borderColor: "rgba(151, 187, 205, 1)",
+        pointBackgroundColor: "rgba(151, 187, 205, 1)",
+        pointBorderColor: "#fff",
+        data: userData.postCount
+      },
+    ],
+  }}
 />
+          </div>
+        
+       
       </div>
     </Layout>
   )

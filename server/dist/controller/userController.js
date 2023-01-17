@@ -19,11 +19,9 @@ module.exports = {
         res.status(201).json(token);
     },
     updateUser: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        console.log(req.body, "this is a mini  fof changes");
         const { userName, firstName, lastName, coverPicture, profilePicture, country, worksAt, livesIn, relationship } = req.body;
         yield userModel_1.default.findOneAndUpdate({ _id: req.params.id }, { $set: { "userName": userName, "firstName": firstName, "lastName": lastName, "coverPicture": coverPicture, "profilePicture": profilePicture, "relationship": relationship, "livesIn": livesIn, "country": country, "worksAt": worksAt } }, { new: true });
         const userData = yield userModel_1.default.findOne({ _id: req.params.id });
-        console.log(userData);
         // console.log(userData)
         // console.log("reahinngnggnngn")
         return res.status(200).json(userData);
@@ -32,10 +30,8 @@ module.exports = {
     follow: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         //followers id
         const id = req.params.id;
-        console.log("reaching here is ", id);
         //user id 
         const { _id } = req.body;
-        console.log(id, _id);
         if (_id === id) {
             return res.status(403).json("Action Forbidden");
         }
@@ -56,7 +52,6 @@ module.exports = {
     unFollow: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         //followers id
         const id = req.params.id;
-        console.log("reaching here is ", id);
         //user id 
         const { _id } = req.body;
         if (_id === id) {
@@ -91,12 +86,14 @@ module.exports = {
     }),
     getUserData: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const userData = yield userModel_1.default.findOne({ _id: req.params.id });
-        console.log(userData);
         res.status(200).json({ userData });
     }),
     getFollowing: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const followersData = yield userModel_1.default.findOne({ _id: req.params.id }, { _id: 0, following: 1 }).populate("following").lean();
-        console.log(followersData, "this is dataaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
         res.status(200).json(followersData);
+    }),
+    deletePost: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        yield postModel_1.default.findByIdAndDelete(req.params.id);
+        res.status(200).json("success");
     })
 };

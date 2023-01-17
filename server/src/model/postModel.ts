@@ -11,6 +11,8 @@ type postModel = {
     createdAt: {};
     imageUrl: string;
     comments: string[];
+    saved: string[];
+    reports:string[]
 
 
 }
@@ -32,8 +34,23 @@ const postSchema = new mongoose.Schema<postModel>(
             default: new Date(),
         },
         imageUrl: String,
+        saved: [{
+           
+                type: mongoose.Schema.Types.ObjectId,
+                ref:"Users"
+            
+        }],
         
         comments: [{
+            userId: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref:"Users"
+            },
+            comment: {
+                type:String
+            }
+        }],
+        reports: [{
             userId: {
                 type: mongoose.Schema.Types.ObjectId,
                 ref:"Users"

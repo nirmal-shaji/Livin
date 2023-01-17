@@ -76,7 +76,7 @@ const rows = [
 
 export default function ColumGroupingTable({ data }) {
 
-  console.log(data,"data insider")
+
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [opened, setOpened] = useState(false);
@@ -94,8 +94,7 @@ export default function ColumGroupingTable({ data }) {
     setPage(0);
   };
 
-  console.log(rows, "this is the data in the dummy")
-  console.log(columns, "this is the columnssssss")
+
   
   return (
      
@@ -112,12 +111,11 @@ export default function ColumGroupingTable({ data }) {
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
-              <TableCell align="center" colSpan={2}>
-                Country
+              <TableCell colSpan={2}>
+                <span style={{"textDecoration":"underline","fontSize":"20px"}}>   Post Table</span>
+             
               </TableCell>
-              <TableCell align="center" colSpan={3}>
-                Details
-              </TableCell>
+           
             </TableRow>
             <TableRow>
               {columns.map((column) => (
@@ -142,13 +140,13 @@ export default function ColumGroupingTable({ data }) {
                       if (column.id === 'imageUrl') {
                         return (
                         <TableCell key={column.id} align={column.align}>
-                          {column.id==='imageUrl'?console.log("hi"):console.log("this is working")}
+                        
                           {/* {column.format && typeof value === 'number'
                             ? column.format(value)
                             : value}
                              */}
                             <img style={{ width: "50px" }} src={value} alt="" onClick={() => {
-                              console.log("this is working")
+                       
                               setPhoto(value);
                               setOpened(true)
                             }} />
@@ -160,12 +158,12 @@ export default function ColumGroupingTable({ data }) {
                       else {
                               return (
                         <TableCell key={column.id} align={column.align}>
-                          {column.id==='imageUrl'?console.log("hi"):console.log("this is working")}
+                       
                           {/* {column.format && typeof value === 'number'
                             ? column.format(value)
                             : value}
                              */}
-                        {console.log(value,"this is values")}
+                      
                           {column.label==='User Name'?value?.userName:value?.firstName}
                         </TableCell>
                       );

@@ -22,7 +22,10 @@ const postReducer = (state = { postData: null,fetchedPost:null, loading: false, 
             
         case "POST_UPLOAD_FAIL": 
             return { ...state, uploading: false, error: true };  
-
+        case "POST_DELETE":
+            return { ...state, postData: [action.data], uploading: false, error: false };
+        case "EDIT_POST":
+            return { ...state, postData: [action.data], uploading: false, error: false };
         default:
             return state;
        

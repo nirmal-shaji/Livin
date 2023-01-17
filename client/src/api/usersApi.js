@@ -13,3 +13,6 @@ export const savePost=(postId,userId)=>axios.get(`/api/v1/post/save/post`,{
     userId 
   }
 })
+export const reportPost = (postId, text) => axios.post(`/api/v1/post/report/${postId}`, text);
+export const deletePost = (postId) => axios.get(`/api/v1/deletePost/${postId}`);
+export const editPost = (postId, data) => axios.post('/api/v1/post/edit/post', data);

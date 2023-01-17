@@ -18,7 +18,7 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receivedMessage }) => {
 
     // Send Message
   const handleSend = async (e) => {
-      console.log("this is working")
+    
       e.preventDefault()
       const message = {
         senderId : currentUser,
@@ -26,7 +26,7 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receivedMessage }) => {
         chatId: chat._id,
     }
     const receiverId = chat.messages.find((id) => id !== currentUser);
-   console.log(receiverId)
+
     // send message to socket server
     setSendMessage({...message, receiverId})
     // send message to database
@@ -47,7 +47,7 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receivedMessage }) => {
     const getUserData = async () => {
       try {
         const { data } = await getUser(userId);
-        console.log(data,'the data is reacing here ')
+      
         setUserData(data);
       } catch (error) {
         console.log(error);
@@ -86,7 +86,7 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receivedMessage }) => {
   
     // Receive Message from parent component
     useEffect(()=> {
-      console.log("Message Arrived: ", receivedMessage)
+   
       if (receivedMessage !== null && receivedMessage.chatId === chat._id) {
         setMessages([...messages, receivedMessage]);
       }

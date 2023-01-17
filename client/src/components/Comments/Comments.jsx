@@ -21,7 +21,7 @@ const addNewComment = async() => {
     userId: userData._id,
     comments:addComments
   }
-  console.log(data,"this is data and post id",postId)
+ 
  await addComment(data,postId)
   setAddComment('')
   setCommentLoad(true);

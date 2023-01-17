@@ -12,4 +12,5 @@ router.patch('/follow/:id', userController_1.default.follow);
 router.patch('/unfollow/:id', userController_1.default.unFollow);
 router.post('/comment/:id', userController_1.default.addComment);
 router.get('/following/:id', userController_1.default.getFollowing);
+router.get('/deletePost/:id', userController_1.default.deletePost);
 module.exports = router;

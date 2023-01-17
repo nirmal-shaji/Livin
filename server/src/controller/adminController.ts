@@ -2,12 +2,13 @@ import { RequestHandler, Request, Response } from 'express';
 import postModel from "../model/postModel";
 import userModel from "../model/userModel"
 import mongoose from "mongoose";
+import notificationModel from '../model/notificationModel';
 
 // creating a post
 
 export = {
     getAllPost: async (req: Request, res: Response) => {
-        console.log("hi reached herer")
+      
         const postData = await postModel.find({}).populate('userId').lean();
         res.status(200).json(postData);
     },
@@ -25,19 +26,66 @@ export = {
         res.status(200).json("success")
     },
     removePost: async (req: Request, res: Response) => {
-        console.log("this is working    ")
+ 
         res.status(200).json("success")
     },
-    dashboard: async (req: Request, res: Request) => {
+    dashboard: async (req: Request, res: Response) => {
         type userss = [{
             _id: string;
             createdAt: string;
 
         }]
-        const users:userss = await userModel.find({},{createdAt:1}).lean();
-        const user = users.map((value) => {
-            console.log(value.createdAt)
-          
-        })
+       
+        const users = await userModel.aggregate([{ $group: { _id: { month: { $month: "$createdAt" } }, userCount: { $sum: 1 } } }]).sort({ _id: -1 })
+      
+        const userCount = [];
+        for (let i = 0; i <12; i++){
+          users.map((value) => {
+                  
+                  if (value.userCount) {
+                    userCount[value._id.month-1]=value.userCount 
+               
+                 
+               
+              }
+              
+            
+          })  
+            if (!userCount[i])
+                userCount[i]=0
+            
+        }
+   
+
+        //////
+        const posts = await postModel.aggregate([{ $group: { _id: { month: { $month: "$createdAt" } }, postCount: { $sum: 1 } } }]).sort({ _id: -1 })
+       
+        const postCount = [];
+        for (let i = 0; i <12; i++){
+          posts.map((value) => {
+                  
+                  if (value.postCount) {
+                    postCount[value._id.month-1]=value.postCount 
+               
+                 
+               
+              }
+              
+            
+          })  
+            if (!postCount[i])
+                postCount[i]=0
+            
+        }
+      
+
+       
+        res.status(200).json({postCount,userCount});
+    },
+    notification: async(req: Request, res: Response) => {
+        const notifications = await notificationModel.findOne({ adminId: "admin" })
+     
+        res.status(200).json(notifications);
     }
+
 }

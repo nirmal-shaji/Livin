@@ -18,7 +18,20 @@ const postSchema = new mongoose_1.default.Schema({
         default: new Date(),
     },
     imageUrl: String,
+    saved: [{
+            type: mongoose_1.default.Schema.Types.ObjectId,
+            ref: "Users"
+        }],
     comments: [{
+            userId: {
+                type: mongoose_1.default.Schema.Types.ObjectId,
+                ref: "Users"
+            },
+            comment: {
+                type: String
+            }
+        }],
+    reports: [{
             userId: {
                 type: mongoose_1.default.Schema.Types.ObjectId,
                 ref: "Users"

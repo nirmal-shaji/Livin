@@ -15,11 +15,11 @@ export = {
         res.status(201).json(token);
     },
   updateUser: async(req: Request, res: Response) => {
-    console.log(req.body,"this is a mini  fof changes")
+   
     const { userName, firstName, lastName, coverPicture,profilePicture, country,worksAt,livesIn,relationship } = req.body;
      await userModel.findOneAndUpdate({ _id: req.params.id }, { $set: { "userName": userName, "firstName": firstName,"lastName":lastName,"coverPicture": coverPicture ,"profilePicture":profilePicture,"relationship":relationship,"livesIn":livesIn,"country":country,"worksAt":worksAt} }, { new: true });
     const userData = await userModel.findOne({ _id: req.params.id })
-    console.log(userData)
+
     // console.log(userData)
     // console.log("reahinngnggnngn")
      return res.status(200).json(userData);
@@ -29,10 +29,10 @@ export = {
        
         //followers id
         const id = req.params.id
-        console.log("reaching here is ", id)
+     
        //user id 
         const { _id } = req.body;
-        console.log(id, _id)
+    
         if (_id === id) {
            
             return res.status(403).json("Action Forbidden");
@@ -60,7 +60,7 @@ export = {
         
         //followers id
         const id = req.params.id
-        console.log("reaching here is ", id)
+     
        //user id 
         const { _id } = req.body;
        
@@ -97,12 +97,17 @@ export = {
   },
   getUserData: async(req: Request, res: Response) => {
     const userData=await userModel.findOne({_id:req.params.id});
-   console.log(userData)
+
     res.status(200).json({ userData });
   },
   getFollowing: async (req: Request, res: Response) => {
     const followersData = await userModel.findOne({ _id: req.params.id },{_id:0,following:1}).populate("following").lean();
-    console.log(followersData, "this is dataaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+ 
     res.status(200).json(followersData)
+  },
+  deletePost: async (req: Request, res: Response) => {
+   
+    await postModel.findByIdAndDelete(req.params.id);
+    res.status(200).json("success");
   }
 }

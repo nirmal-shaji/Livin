@@ -24,7 +24,7 @@ const Chat = () => {
     const getChats = async () => {
       try {
           const { data } = await userChats(userData._id);
-        console.log(data);
+     
          setChats(data);
       } catch (error) {
         console.log(error);
@@ -36,7 +36,7 @@ const Chat = () => {
   
   useEffect(() => {
     socket.current = io("ws://localhost:8080");
-    console.log(userData._id)
+  
     socket.current.emit("addNewUser", userData._id);
     socket.current.on("allUsers", (user) => {
   
@@ -55,7 +55,7 @@ const Chat = () => {
 //recieve messages
   useEffect(() => {
     socket.current.on("recieveMessage", (data) => {
-      console.log(data)
+
       setReceivedMessage(data);
     }
 
