@@ -1,10 +1,10 @@
 import express from "express";
 import messageController from "../controller/messageController.js";
-// import authenticate from "../middleware/Auth.js";
+import authMiddleWare from "../middleware/authMiddleware.js";
 const router = express.Router();
 
 // router.use(authenticate);
-router.post("/", messageController.addMessage);
-router.get("/:chatId", messageController.getMessages);
+router.post("/",authMiddleWare, messageController.addMessage);
+router.get("/:chatId",authMiddleWare, messageController.getMessages);
 
 export default router;

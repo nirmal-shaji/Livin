@@ -8,8 +8,8 @@ dotenv.config()
 
 export = {
     register: async (req: Request, res: Response) => {
-        
-        const { userName, password, firstName, lastName,email } = req.body;
+        try {
+            const { userName, password, firstName, lastName,email } = req.body;
         if (!userName || !password || !firstName || !lastName ) {
             return res.status(404).json({ message: "missing fields" });
         }
@@ -27,14 +27,21 @@ export = {
           );
         }
        
-        res.status(200).json({message:"successfull",userData,token})
+        res.status(200).json({message:"successfull",userData,token})  
+        } catch (error) {
+            console.log(error)
+             res.status(500).send(error)
+        }
+      
     },
     login: async (req: Request, res: Response) => {
+    
         type requestBody={
             userName: string;
             password: string;
         }
-        const { userName, password}:requestBody = req.body;
+        try {
+              const { userName, password}:requestBody = req.body;
        
         const userData = await userModel.findOne({ userName: userName});
         
@@ -56,12 +63,17 @@ export = {
              );
             }
             res.status(200).json({ message: "user verified", userData,token })
+        } 
+        } catch (error) {
+            console.log(error)
+             res.status(500).send(error)
         }
+     
        
     },
     adminLogin: async (req: Request, res: Response) => {
-        
-        const { userName, password } = req.body;
+        try {
+             const { userName, password } = req.body;
         const adminData=await adminModel.findOne({userName:userName},{userName:1,password:1});
       
         if (adminData) {
@@ -80,7 +92,12 @@ export = {
              
                 return res.status(200).json({adminData,token})
             }
+        }  
+        } catch (error) {
+            console.log(error)
+             res.status(500).send(error)
         }
+     
         
     }
 }

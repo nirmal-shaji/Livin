@@ -28,6 +28,6 @@ app.use('/api/v1/message', messageRouter);
 app.use('/api/v1/admin',adminRouter);
 
 
-app.listen(6000, () => {
+app.listen(5000, () => {
     console.log("server connected")
 });

@@ -23,13 +23,17 @@ const authMiddleWare = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
         if (token) {
             if (secret) {
                 const decoded = jsonwebtoken_1.default.verify(token, secret);
-                console.log(decoded);
-                if (req.body) {
-                    req.body._id = decoded.id;
+                if (decoded) {
+                    next();
+                }
+                else {
+                    return res.status(400).json("unauthorized entry");
                 }
             }
         }
-        next();
+        else {
+            return res.status(400).json("unauthorized entry");
+        }
     }
     catch (error) {
         console.log(error);

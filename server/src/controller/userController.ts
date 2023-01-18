@@ -6,108 +6,147 @@ import userModel from '../model/userModel';
 
 export = {
 
-    guestHome: (req: Request, res: Response) => {
-        type stander= {
-            message: String
-        }
-     
-        const token:stander={ message: "succcessfull" }
-        res.status(201).json(token);
-    },
-  updateUser: async(req: Request, res: Response) => {
-   
-    const { userName, firstName, lastName, coverPicture,profilePicture, country,worksAt,livesIn,relationship } = req.body;
-     await userModel.findOneAndUpdate({ _id: req.params.id }, { $set: { "userName": userName, "firstName": firstName,"lastName":lastName,"coverPicture": coverPicture ,"profilePicture":profilePicture,"relationship":relationship,"livesIn":livesIn,"country":country,"worksAt":worksAt} }, { new: true });
-    const userData = await userModel.findOne({ _id: req.params.id })
 
-    // console.log(userData)
-    // console.log("reahinngnggnngn")
-     return res.status(200).json(userData);
-    // console.log(data)
-    },
-    follow: async (req: Request, res: Response) => {
-       
-        //followers id
-        const id = req.params.id
-     
-       //user id 
-        const { _id } = req.body;
-    
-        if (_id === id) {
-           
-            return res.status(403).json("Action Forbidden");
-        }
-        else {
-           const followUser = await userModel.findById(id);
-            const followingUser = await userModel.findById(_id);
-      
-            if (!followUser?.followers.includes(_id)) {
-              
-                await followUser?.updateOne({ $push: { followers: _id } });
-                await followingUser?.updateOne({ $push: { following: id } });
-         
-                const userData = await userModel.findById(_id)
-               
-                res.status(200).json(userData);
-            } else {
-                
-                res.status(403).json("you are already following this id");
-            }
-          
-        }
-    },
-    unFollow: async (req: Request, res: Response) => {
-        
-        //followers id
-        const id = req.params.id
-     
-       //user id 
-        const { _id } = req.body;
-       
-        if (_id === id) {
-          res.status(403).json("Action Forbidden");
+  updateUser: async (req: Request, res: Response) => {
+    try {
+      const { userName, firstName, lastName, coverPicture, profilePicture, country, worksAt, livesIn, relationship } = req.body;
+      await userModel.findOneAndUpdate({ _id: req.params.id }, { $set: { "userName": userName, "firstName": firstName, "lastName": lastName, "coverPicture": coverPicture, "profilePicture": profilePicture, "relationship": relationship, "livesIn": livesIn, "country": country, "worksAt": worksAt } }, { new: true });
+      const userData = await userModel.findOne({ _id: req.params.id })
+
+      return res.status(200).json(userData);
+    } catch (error) {
+      console.log(error);
+      res.status(500).send(error)
+    }
+
+
+
+  },
+  follow: async (req: Request, res: Response) => {
+    try {
+      //followers id
+      const id = req.params.id
+
+      //user id 
+      const { _id } = req.body;
+
+      if (_id === id) {
+
+        return res.status(403).json("Action Forbidden");
+      }
+      else {
+        const followUser = await userModel.findById(id);
+        const followingUser = await userModel.findById(_id);
+
+        if (!followUser?.followers.includes(_id)) {
+
+          await followUser?.updateOne({ $push: { followers: _id } });
+          await followingUser?.updateOne({ $push: { following: id } });
+
+          const userData = await userModel.findById(_id)
+
+          res.status(200).json(userData);
         } else {
-          try {
-            const unfollowUser = await userModel.findById(id);
-            const unfollowingUser = await userModel.findById(_id);
-      
-            if (unfollowUser?.followers.includes(_id)) {
-                await unfollowUser?.updateOne({ $pull: { followers: _id } });
-                await unfollowingUser?.updateOne({ $pull: { following: id } });
-           
-                const userData = await userModel.findById(_id)
-               
-              res.status(200).json(userData);
-            } else {
-              res.status(403).json("you are already unfollowed this id");
-            }
-          } catch (error) {
-            console.log(error)
-            res.status(500).json(error);
+
+          res.status(403).json("you are already following this id");
+        }
+
+      }
+    } catch (error) {
+      console.log(error);
+      res.status(500).send(error)
+    }
+
+
+  },
+  unFollow: async (req: Request, res: Response) => {
+    try {
+      //followers id
+      const id = req.params.id
+
+      //user id 
+      const { _id } = req.body;
+
+      if (_id === id) {
+        res.status(403).json("Action Forbidden");
+      } else {
+        try {
+          const unfollowUser = await userModel.findById(id);
+          const unfollowingUser = await userModel.findById(_id);
+
+          if (unfollowUser?.followers.includes(_id)) {
+            await unfollowUser?.updateOne({ $pull: { followers: _id } });
+            await unfollowingUser?.updateOne({ $pull: { following: id } });
+
+            const userData = await userModel.findById(_id)
+
+            res.status(200).json(userData);
+          } else {
+            res.status(403).json("you are already unfollowed this id");
           }
-        } 
-    },
-    getAllUsers: async (req: Request, res: Response) => {
-        const usersList=await userModel.find({}).lean();
-      
-        res.status(200).json({usersList})
+        } catch (error) {
+          console.log(error)
+          res.status(500).json(error);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      res.status(500).send(error)
+    }
+
+
+  },
+  getAllUsers: async (req: Request, res: Response) => {
+    try {
+      const usersList = await userModel.find({}).lean();
+
+      res.status(200).json({ usersList })
+    } catch (error) {
+      console.log(error);
+      res.status(500).send(error)
+    }
+
   },
   addComment: async (req: Request, res: Response) => {
-      await postModel.updateOne({ _id: req.params.id }, { $push: { comments: {userId:req.body.userId,comment:req.body.comment}} })
-  },
-  getUserData: async(req: Request, res: Response) => {
-    const userData=await userModel.findOne({_id:req.params.id});
+    try {
+      await postModel.updateOne({ _id: req.params.id }, { $push: { comments: { userId: req.body.userId, comment: req.body.comment } } })
+    } catch (error) {
+      console.log(error);
+      res.status(500).send(error)
+    }
 
-    res.status(200).json({ userData });
+  },
+  getUserData: async (req: Request, res: Response) => {
+    try {
+      const userData = await userModel.findOne({ _id: req.params.id });
+
+      res.status(200).json({ userData });
+    } catch (error) {
+      console.log(error);
+      res.status(500).send(error)
+    }
+
   },
   getFollowing: async (req: Request, res: Response) => {
-    const followersData = await userModel.findOne({ _id: req.params.id },{_id:0,following:1}).populate("following").lean();
- 
-    res.status(200).json(followersData)
+    try {
+      const followersData = await userModel.findOne({ _id: req.params.id }, { _id: 0, following: 1 }).populate("following").lean();
+
+      res.status(200).json(followersData)
+    } catch (error) {
+      console.log(error);
+      res.status(500).send(error)
+    }
+
   },
   deletePost: async (req: Request, res: Response) => {
-     console.log(req.params.id)
-    await postModel.findByIdAndDelete(req.params.id);
-    res.status(200).json("success");
+    try {
+
+      await postModel.findByIdAndDelete(req.params.id);
+      res.status(200).json("success");
+    } catch (error) {
+      console.log(error);
+      res.status(500).send(error)
+    }
+
   }
 }

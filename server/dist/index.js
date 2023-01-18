@@ -26,6 +26,6 @@ app.use('/api/v1/post', postRouter_1.default);
 app.use('/api/v1/chat', chatRouter_1.default);
 app.use('/api/v1/message', messageRouter_1.default);
 app.use('/api/v1/admin', adminRouter_1.default);
-app.listen(6000, () => {
+app.listen(5000, () => {
     console.log("server connected");
 });

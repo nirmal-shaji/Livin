@@ -28,101 +28,135 @@ module.exports = {
     }),
     getPost: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         var _a;
-        const userId = req.params.id;
-        let userPost = yield postModel_1.default.find({ userId: userId }).sort({ updatedAt: 'desc' }).lean();
-        let followingPost = yield userModel_1.default.aggregate([{ $match: { _id: new mongoose_1.default.Types.ObjectId(userId) } },
-            {
-                $lookup: {
-                    from: "posts",
-                    localField: "following",
-                    foreignField: "userId",
-                    as: "followingPosts",
-                }
-            },
-            {
-                $lookup: {
-                    from: "users",
-                    localField: "followingPosts.userId",
-                    foreignField: "_id",
-                    as: "userDetails"
-                }
-            },
-            {
-                $project: {
-                    followingPosts: 1,
-                    _id: 0,
+        try {
+            const userId = req.params.id;
+            let userPost = yield postModel_1.default.find({ userId: userId }).sort({ updatedAt: 'desc' }).lean();
+            let followingPost = yield userModel_1.default.aggregate([{ $match: { _id: new mongoose_1.default.Types.ObjectId(userId) } },
+                {
+                    $lookup: {
+                        from: "posts",
+                        localField: "following",
+                        foreignField: "userId",
+                        as: "followingPosts",
+                    }
                 },
-            },
-        ]);
-        // const FollowerId = await userModel.find({ _id: userId }, { _id: 0, following: 1 }).lean();
-        // let userFeed;
-        // let feedData=FollowerId.map(async(value) => {
-        //   return  userFeed = await postModel.find({ _id: value._id}).lean();
-        // })
-        // console.log(userPost
-        //   .concat(...followingPost[0].followingPosts),"ithentha avsthann ariyan")
-        // console.log(userPost
-        //   .concat(...followingPost[0].followingPosts)
-        //   ?.sort(
-        //     (a, b) => {
-        //           return new Date(+b.createdAt).getTime() - new Date(+a.createdAt).getTime();
-        //    }))
-        res.status(200).json((_a = userPost
-            .concat(...followingPost[0].followingPosts)) === null || _a === void 0 ? void 0 : _a.sort((a, b) => {
-            return new Date(+b.createdAt).getTime() - new Date(+a.createdAt).getTime();
-        }));
+                {
+                    $lookup: {
+                        from: "users",
+                        localField: "followingPosts.userId",
+                        foreignField: "_id",
+                        as: "userDetails"
+                    }
+                },
+                {
+                    $project: {
+                        followingPosts: 1,
+                        _id: 0,
+                    },
+                },
+            ]);
+            res.status(200).json((_a = userPost
+                .concat(...followingPost[0].followingPosts)) === null || _a === void 0 ? void 0 : _a.sort((a, b) => {
+                return new Date(+b.createdAt).getTime() - new Date(+a.createdAt).getTime();
+            }));
+        }
+        catch (error) {
+            console.log(error);
+            res.status(500).send(error);
+        }
     }),
     likePost: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        const id = req.params.id;
-        const { userId } = req.body;
-        const postData = yield postModel_1.default.findById(id);
-        if (postData === null || postData === void 0 ? void 0 : postData.likes.includes(userId)) {
-            yield postModel_1.default.updateOne({ _id: id }, { $pull: { likes: userId } });
-            res.status(200).json({ message: "unliked photo" });
+        try {
+            const id = req.params.id;
+            const { userId } = req.body;
+            const postData = yield postModel_1.default.findById(id);
+            if (postData === null || postData === void 0 ? void 0 : postData.likes.includes(userId)) {
+                yield postModel_1.default.updateOne({ _id: id }, { $pull: { likes: userId } });
+                res.status(200).json({ message: "unliked photo" });
+            }
+            else {
+                yield postModel_1.default.updateOne({ _id: id }, { $push: { likes: userId } });
+                const newPostDAta = yield postModel_1.default.findById(id);
+                res.status(200).json({ message: "liked photo" });
+            }
         }
-        else {
-            yield postModel_1.default.updateOne({ _id: id }, { $push: { likes: userId } });
-            const newPostDAta = yield postModel_1.default.findById(id);
-            res.status(200).json({ message: "liked photo" });
+        catch (error) {
+            console.log(error);
+            res.status(500).send(error);
         }
     }),
     addComment: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        const data = yield postModel_1.default.findOne({ _id: req.params.id });
-        yield postModel_1.default.updateOne({ _id: req.params.id }, { $push: { comments: { userId: req.body.userId, comment: req.body.comments } } });
-        res.status(200).json("success");
+        try {
+            const data = yield postModel_1.default.findOne({ _id: req.params.id });
+            yield postModel_1.default.updateOne({ _id: req.params.id }, { $push: { comments: { userId: req.body.userId, comment: req.body.comments } } });
+            res.status(200).json("success");
+        }
+        catch (error) {
+            console.log(error);
+            res.status(500).send(error);
+        }
     }),
     allComment: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        const data = yield postModel_1.default.findOne({ _id: req.params.id }, { comments: 1 }).populate('comments.userId').lean();
-        res.status(200).json(data);
+        try {
+            const data = yield postModel_1.default.findOne({ _id: req.params.id }, { comments: 1 }).populate('comments.userId').lean();
+            res.status(200).json(data);
+        }
+        catch (error) {
+            console.log(error);
+            res.status(500).send(error);
+        }
     }),
     savePost: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        const savePostExist = yield savedPostModel_1.default.findOne({ userId: req.query.userId });
-        if (savePostExist) {
-            const postExist = yield savedPostModel_1.default.findOne({ postId: req.query.postId });
-            if (postExist) {
-                return res.status(200).json("sucess");
+        try {
+            const savePostExist = yield savedPostModel_1.default.findOne({ userId: req.query.userId });
+            if (savePostExist) {
+                const postExist = yield savedPostModel_1.default.findOne({ postId: req.query.postId });
+                if (postExist) {
+                    return res.status(200).json("sucess");
+                }
+                yield savedPostModel_1.default.findOneAndUpdate({ userId: req.query.userId }, { $push: { postId: req.query.postId } });
+                return res.status(200).json("success");
             }
-            yield savedPostModel_1.default.findOneAndUpdate({ userId: req.query.userId }, { $push: { postId: req.query.postId } });
-            return res.status(200).json("success");
+            yield savedPostModel_1.default.create(req.query);
+            res.status(200).json("success");
         }
-        yield savedPostModel_1.default.create(req.query);
-        res.status(200).json("success");
+        catch (error) {
+            console.log(error);
+            res.status(500).send(error);
+        }
     }),
     allSavedPost: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        const data = yield savedPostModel_1.default.findOne({ userId: req.params.id });
-        res.status(200).json(data);
+        try {
+            const data = yield savedPostModel_1.default.findOne({ userId: req.params.id });
+            res.status(200).json(data);
+        }
+        catch (error) {
+            console.log(error);
+            res.status(500).send(error);
+        }
     }),
     reportPost: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        const data = yield postModel_1.default.findOneAndUpdate({ _id: req.params.id }, { $push: { reports: { userId: req.body.userId, comment: req.body.reportText } } });
-        const obj = { userId: req.body.userId, comment: req.body.reportText };
-        // await notificationModel.reports.push(obj)
-        //await notificationModel.create.({reports:{ userId: req.body.userId, comment: req.body.reportText}});
-        yield notificationModel_1.default.findOneAndUpdate({ adminId: "admin" }, { $push: { reports: { postId: req.params.id, comment: req.body.reportText } } });
-        res.status(200).json("success");
+        try {
+            const data = yield postModel_1.default.findOneAndUpdate({ _id: req.params.id }, { $push: { reports: { userId: req.body.userId, comment: req.body.reportText } } });
+            const obj = { userId: req.body.userId, comment: req.body.reportText };
+            // await notificationModel.reports.push(obj)
+            //await notificationModel.create.({reports:{ userId: req.body.userId, comment: req.body.reportText}});
+            yield notificationModel_1.default.findOneAndUpdate({ adminId: "admin" }, { $push: { reports: { postId: req.params.id, comment: req.body.reportText } } });
+            res.status(200).json("success");
+        }
+        catch (error) {
+            console.log(error);
+            res.status(500).send(error);
+        }
     }),
     editPost: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        console.log(req.body);
-        const data = yield postModel_1.default.findOneAndUpdate({ _id: req.body.postId }, { $set: { desc: req.body.desc } });
-        res.status(200).json({ data });
+        try {
+            const data = yield postModel_1.default.findOneAndUpdate({ _id: req.body.postId }, { $set: { desc: req.body.desc } });
+            res.status(200).json({ data });
+        }
+        catch (error) {
+            console.log(error);
+            res.status(500).send(error);
+        }
     })
 };

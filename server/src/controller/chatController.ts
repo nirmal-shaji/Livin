@@ -7,7 +7,9 @@ import mongoose from "mongoose";
 // creating a post
 
 export = {
-    createChat: async (req: Request, res: Response) => {
+  createChat: async (req: Request, res: Response) => {
+    
+    
     try {
       
       const chatExist = await chatModel.findOne({ messages: { $all: [req.body.senderId, req.body.receiverId] } }).lean()
