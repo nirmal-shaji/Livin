@@ -9,20 +9,19 @@ import coverPicture from "../../img/defaultProfile.png"
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useDispatch, useSelector } from 'react-redux'
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
-import ReportIcon from '@mui/icons-material/Report';
-import DeleteIcon from '@mui/icons-material/Delete';
-import { savePost, reportPost,editPost } from '../../api/usersApi'
+
+import { savePost, reportPost, editPost } from '../../api/usersApi'
 import { deletePosts } from '../../redux/actions/userAction'
 import { likePost } from '../../api/postApi'
-import zIndex from '@mui/material/styles/zIndex'
+
 import Report from '@mui/icons-material/Report'
 import { allComment } from '../../api/postApi'
-import { Modal, Button, Group } from '@mantine/core';
+import { Modal } from '@mantine/core';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 
 const Post = ({ data, id }) => {
-const dispatch=  useDispatch()
+  const dispatch = useDispatch()
   const { userData } = useSelector((state) => state.authReducer.authData);
   const [showComments, setShowComments] = useState([]);
   const [liked, setLiked] = useState(data.likes.includes(userData._id));
@@ -36,30 +35,30 @@ const dispatch=  useDispatch()
   const [edit, setEdit] = useState(false);
 
   const deletePost = async () => {
-  dispatch(deletePosts(id))
+    dispatch(deletePosts(id))
   }
   const savePosts = async () => {
 
     await savePost(id, userData._id);
   }
 
-  const reportSubmit = async()=> {
+  const reportSubmit = async () => {
 
-    const data={userId:userData._id,reportText:reportText}
+    const data = { userId: userData._id, reportText: reportText }
     await reportPost(id, data)
     setReportText("")
     setOpened(false)
   }
-  const editSubmit = async()=> {
-   //here in order to reduce the no of state i have actually used the  same state reportText 
-    const data={postId:id,desc:reportText}
+  const editSubmit = async () => {
+    //here in order to reduce the no of state i have actually used the  same state reportText 
+    const data = { postId: id, desc: reportText }
     const datas = await editPost(id, data)
-    dispatch({type:"EDIT_POST",datas})
+    dispatch({ type: "EDIT_POST", datas })
     setReportText("")
     setEdit(false)
-}
+  }
   const allComments = async () => {
-  
+
 
     const { data } = await allComment(id);
 
@@ -71,7 +70,7 @@ const dispatch=  useDispatch()
   commentLoad && allComments()
 
   const handleLike = () => {
-  
+
     likePost(data._id, userData._id);
     setLiked((prev) => !prev);
     liked ? setLikes((prev) => prev - 1) : setLikes((prev) => prev + 1)
@@ -84,13 +83,13 @@ const dispatch=  useDispatch()
         onClose={() => setOpened(false)}>
         <div style={{ "textAlign": "center" }}>
           <span>Explain why your reporting this post?</span>
-         
-          
-          
+
+
+
           <input style={{ "width": "100%", "marginTop": "10px" }} onChange={(e) => {
             setReportText(e.target.value)
           }} type="text" id="report" name='report' />
-          <button style={{"marginTop":"10px"}} onClick={reportSubmit}>submit</button>
+          <button style={{ "marginTop": "10px" }} onClick={reportSubmit}>submit</button>
 
 
         </div>
@@ -101,13 +100,13 @@ const dispatch=  useDispatch()
         onClose={() => setEdit(false)}>
         <div style={{ "textAlign": "center" }}>
           <span>Edit the Description of your post?</span>
-         
-          
-          
+
+
+
           <input style={{ "width": "100%", "marginTop": "10px" }} onChange={(e) => {
             setReportText(e.target.value)
           }} type="text" id="report" name='report' />
-          <button style={{"marginTop":"10px"}} onClick={editSubmit}>submit</button>
+          <button style={{ "marginTop": "10px" }} onClick={editSubmit}>submit</button>
 
 
         </div>
@@ -115,21 +114,21 @@ const dispatch=  useDispatch()
       </Modal>
 
       <Modal
-                  opened={deletes}
-                  onClose={() => setDelete(false)}>
+        opened={deletes}
+        onClose={() => setDelete(false)}>
         <div style={{ "textAlign": "center" }}>
-          
-        <span> are you sure you want to delete the post?</span><br /><br />
-            <button style={{}} onClick={deletePost}>delete</button>
-                    
-                  </div>
 
-                </Modal>
+          <span> are you sure you want to delete the post?</span><br /><br />
+          <button style={{}} onClick={deletePost}>delete</button>
+
+        </div>
+
+      </Modal>
 
       <div className="detail" style={{ "display": "flex", "justifyContent": "space-between", "paddingBottom": "3px" }}>
         <div>
           <span><img style={{ "width": "20px", }} src={data?.userId?.profilePicture ? data?.userId?.profilePicture : coverPicture} alt="" />  </span>
-          <span>{data?.userId?.userName}</span>
+          <span>{data?.userId?.firstName} {data?.userId?.lastName}</span>
         </div>
         <div>
           <span className='icon' style={{}} onClick={() => {
@@ -146,17 +145,17 @@ const dispatch=  useDispatch()
         {userData._id === data?.userId?._id ? <div >
 
           <div onClick={() => {
-          setDelete(true)
+            setDelete(true)
           }}><DeleteForeverIcon /> Delete this post!</div>
-           <div onClick={() => {
-          setEdit(true)
+          <div onClick={() => {
+            setEdit(true)
           }}><EditIcon /> Edit Post</div>
         </div> : <div >
           {/* <div onClick={savePosts}><SaveAltIcon /> Save later</div> */}
 
           <div onClick={savePosts}><SaveAltIcon /> Save later</div>
           <div onClick={() => {
-          
+
             setOpened(true)
           }}><Report /> Report this post!</div>
 
@@ -180,13 +179,13 @@ const dispatch=  useDispatch()
       </div>
       <span style={{ color: "var(--gray)", fontSize: '12px' }}>{likes} Likes</span>
       <div className="detail">
-        <span><b>{data.userName ? data.userName : userData.userName}</b></span>
+        <span><b>{data?.userId?.userName}</b></span>
         <span> {data.desc}</span>
       </div>
       <div>
         {commentLoads && (
           showComments.map((value) => {
-            return (<div><span><img style={{ "width": "20px" }} src={value.userId.profilePicture} alt="" /> </span> <b>{value.userId.userName}</b> <span>{value.comment}</span> </div>)
+            return (<div><span><img style={{ "width": "20px" }} src={value?.userId?.profilePicture?value?.userId?.profilePicture:coverPicture} alt="" /> </span> <b>{value.userId.userName}</b> <span>{value.comment}</span> </div>)
 
           }))
 

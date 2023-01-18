@@ -83,9 +83,14 @@ export = {
         res.status(200).json({postCount,userCount});
     },
     notification: async(req: Request, res: Response) => {
-        const notifications = await notificationModel.findOne({ adminId: "admin" })
+        const notifications = await notificationModel.findOne({ adminId: "admin" }).populate('reports.postId'); 
      
         res.status(200).json(notifications);
+    },
+    deleteNotification: async (req: Request, res: Response) => {
+        
+        const notification = await notificationModel.findOneAndUpdate({ adminId: "admin" }, { $set: { reports: [] } })
+        res.status(200).json("success");
     }
 
 }

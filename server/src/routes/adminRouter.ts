@@ -9,7 +9,8 @@ router.get('/posts', adminController.getAllPost)
 router.get('/block/:id', adminController.blockUser);
 router.patch('/block/:id', adminController.unBlockUser);
 router.get('/dashboard', adminController.dashboard);
-router.get('/notification',adminController.notification)
+router.get('/notification', adminController.notification)
+router.get('/notification/delete', adminController.deleteNotification);
 
 
 

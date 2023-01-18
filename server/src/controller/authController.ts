@@ -39,7 +39,8 @@ export = {
         const userData = await userModel.findOne({ userName: userName});
         
         if (userData) {
-            
+            if (userData.block)
+                return res.status(403).json("user blocked")
             const userVerified =await bcrypt.compare(password, userData.password);
          
             

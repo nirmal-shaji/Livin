@@ -7,10 +7,13 @@ import { useEffect } from 'react'
 import { useState } from 'react'
 const PostList = () => {
 const [postData,setPostData]=useState([])
-  useEffect(async() => {
-    
-   const {data} = await postsList();
+  useEffect(() => {
+    const postList = async() => {
+       const {data} = await postsList();
     setPostData(data);
+    }
+    postList();
+  
     
   }, [])
   

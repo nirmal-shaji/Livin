@@ -61,7 +61,11 @@ module.exports = {
         res.status(200).json({ postCount, userCount });
     }),
     notification: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        const notifications = yield notificationModel_1.default.findOne({ adminId: "admin" });
+        const notifications = yield notificationModel_1.default.findOne({ adminId: "admin" }).populate('reports.postId');
         res.status(200).json(notifications);
+    }),
+    deleteNotification: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        const notification = yield notificationModel_1.default.findOneAndUpdate({ adminId: "admin" }, { $set: { reports: [] } });
+        res.status(200).json("success");
     })
 };

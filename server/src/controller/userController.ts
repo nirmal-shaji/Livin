@@ -106,7 +106,7 @@ export = {
     res.status(200).json(followersData)
   },
   deletePost: async (req: Request, res: Response) => {
-   
+     console.log(req.params.id)
     await postModel.findByIdAndDelete(req.params.id);
     res.status(200).json("success");
   }

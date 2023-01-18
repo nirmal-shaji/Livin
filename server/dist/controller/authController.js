@@ -37,6 +37,8 @@ module.exports = {
         const { userName, password } = req.body;
         const userData = yield userModel_1.default.findOne({ userName: userName });
         if (userData) {
+            if (userData.block)
+                return res.status(403).json("user blocked");
             const userVerified = yield bcrypt_1.default.compare(password, userData.password);
             if (!userVerified)
                 return res.status(404).json({ message: "user verification failed", status: "false" });

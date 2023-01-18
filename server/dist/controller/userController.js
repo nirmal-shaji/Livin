@@ -93,6 +93,7 @@ module.exports = {
         res.status(200).json(followersData);
     }),
     deletePost: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        console.log(req.params.id);
         yield postModel_1.default.findByIdAndDelete(req.params.id);
         res.status(200).json("success");
     })

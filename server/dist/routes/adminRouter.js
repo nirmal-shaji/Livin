@@ -11,4 +11,5 @@ router.get('/block/:id', adminController_1.default.blockUser);
 router.patch('/block/:id', adminController_1.default.unBlockUser);
 router.get('/dashboard', adminController_1.default.dashboard);
 router.get('/notification', adminController_1.default.notification);
+router.get('/notification/delete', adminController_1.default.deleteNotification);
 module.exports = router;

@@ -3,7 +3,7 @@
     case "ADMIN_AUTH_START":
         return {...state, loading: true, error: false };
     case "ADMIN_AUTH_SUCCESS":
-      localStorage.setItem("profile", JSON.stringify({...action.data}));
+      localStorage.setItem("adminProfile", JSON.stringify({...action.data}));
       return {...state,  adminData: action.data, loading: false, error: false };
 
 

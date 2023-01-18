@@ -12,18 +12,19 @@
         display: none;
       }
       
-      @media screen and (max-width: 1200px) {
+      @media only screen and (max-width: 1250px) {
         .Home {
-          grid-template-columns: 35% 50% 20rem;
-          overflow-y: scroll;
+          grid-template-columns: 18rem auto;
         }
-      }
-      @media screen and (max-width: 768px) {
-        .Home {
-          grid-template-columns: 1fr;
-        }
-      
-        .Home::-webkit-scrollbar {
+        .RightSide {
           display: none;
         }
-    }       
+      }
+      @media only screen and (max-width: 900px) {
+        .Home {
+          grid-template-columns: auto;
+        }
+        .FollowersCard {
+          display: none;
+        }
+      }       

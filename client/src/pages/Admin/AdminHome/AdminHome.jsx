@@ -15,11 +15,13 @@ import "./AdminHome.css"
 function AdminHome() {
   const [userData, setUserData] = useState([])
 
-  useEffect(async() => {
-    const {data}= await adminDashboard()
+  useEffect( () => {
+    const dash = async () =>{
+    const { data } = await adminDashboard()
   
-    setUserData(data); 
-   
+      setUserData(data);
+    }
+    dash();
    
   }, [])
  

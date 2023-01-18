@@ -4,7 +4,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { adminLogout } from "../../../redux/actions/authActions";
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
-import { adminNotification } from "../../../api/adminApi";
+import { adminNotification, deleteAdminNotification } from "../../../api/adminApi";
 import { Modal } from "@mantine/core";
 import "./Layout.css";
 import { Card, Image, Text, Badge, Button, Group } from '@mantine/core';
@@ -34,14 +34,20 @@ function Layout({ children }) {
 
     }
   ];
-  useEffect(async () => {
-    const  {data}  = await adminNotification();
-    setNotifiction(data.reports);
+  useEffect( () => {
+    const noti = async() => {
+     const { data } = await adminNotification();
+    setNotifiction(data.reports); 
+    }
+    noti();
 
 
   }, [])
   console.log(notification)
-
+  const deleteNotification = async () => {
+    await deleteAdminNotification();
+    setOpened(false)
+  }
 
   return (
     <div className="main">
@@ -92,9 +98,7 @@ function Layout({ children }) {
               ></i>
             )}
             <div className="d-flex align-items-center px-3">
-              {/* <Badge className="mx-3" size="default" count={user?.unseenNotifications.length} onClick={()=>navigate('/notifications')}>
-                <i className="ri-notification-line header-action-icon"></i>
-              </Badge> */}
+          
 
               <h4 className="anchor">
                 admin
@@ -102,7 +106,7 @@ function Layout({ children }) {
 
               <a href="#" class="notification">
                 <span onClick={() => setOpened(true)}><NotificationsActiveIcon /></span>
-                <span class="badge">{notification.length }</span>
+                <span class="badge">{notification.length}</span>
               </a>
 
             </div>
@@ -111,17 +115,35 @@ function Layout({ children }) {
           <Modal overflow="inside" opened={opened}
             onClose={() => setOpened(false)} title="Notification-center">     <Card shadow="sm" p="lg" radius="md" withBorder>
 
-      <Group position="apart" mt="md" mb="xs">
-        <Text weight={500}>New post report </Text>
-      
-      </Group>
+              <Group position="apart" mt="md" mb="xs">
+                {notification[0] ?
+                  
+                  <>
+                    <Text weight={500}>New post report: ({notification.length})
+                    <Text size="sm" color="dimmed" onClick={deleteNotification}>
 
-      <Text size="sm" color="dimmed">
-        data
-      </Text>
+                    <Link to="/admin/posts" onClick={() => setOpened(false)}>view reports</Link>
 
-     
-    </Card></Modal>
+                  </Text>
+                  </Text>
+                  <Text size="sm" color="dimmed" onClick={deleteNotification}>
+
+
+                    mark as read
+                    </Text>
+                    </>
+                :
+                  <Text weight={500}>
+                    No new notifications
+                  </Text>}
+
+
+              </Group>
+
+
+
+
+            </Card></Modal>
           <div className="body">{children}</div>
         </div>
       </div>
